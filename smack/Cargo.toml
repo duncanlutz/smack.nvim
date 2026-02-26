@@ -1,0 +1,10 @@
+[package]
+name = "smack"
+version = "0.1.0"
+edition = "2021"
+description = "Apple Silicon accelerometer impact detector for smack.nvim"
+repository = "https://github.com/duncanlutz/smack.nvim"
+license = "MIT"
+
+[dependencies]
+# Zero external dependencies - just macOS system frameworks via FFI
