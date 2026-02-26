@@ -18,22 +18,28 @@ maximum feedback.
 - Apple Silicon MacBook (M2 or later)
 - macOS
 - Neovim 0.9+
-- Rust toolchain (to build `smack`)
 
 > **Note:** Does not work on M1, Intel Macs, Mac Studio, Mac Mini, iMac, or Mac
 > Pro — they lack the MEMS accelerometer.
 
 ## Installation
 
-### 1. Install the `smack` binary
+### 1. Install the `smack` daemon
 
-#### Download prebuilt binary (recommended)
-
-Grab the latest release from
-[GitHub Releases](https://github.com/duncanlutz/smack.nvim/releases):
+One-liner that downloads the latest binary, installs it, and starts the
+LaunchDaemon:
 
 ```bash
-# Download and extract
+curl -fsSL https://raw.githubusercontent.com/duncanlutz/smack.nvim/master/install.sh | bash
+```
+
+<details>
+<summary>Manual install / build from source</summary>
+
+#### Download prebuilt binary
+
+```bash
+# Download and extract the latest release
 curl -L https://github.com/duncanlutz/smack.nvim/releases/latest/download/smack_v0.1.0_darwin_arm64.tar.gz | tar xz
 sudo mv smack /usr/local/bin/
 ```
@@ -46,13 +52,37 @@ cargo build --release
 sudo cp target/release/smack /usr/local/bin/
 ```
 
+#### Start the daemon
+
+`smack` requires root for IOKit HID access. Run it manually:
+
+```bash
+sudo smack
+```
+
+Or install as a Launch Daemon (starts automatically on boot):
+
+```bash
+sudo cp com.smack.plist /Library/LaunchDaemons/
+sudo launchctl load /Library/LaunchDaemons/com.smack.plist
+```
+
+</details>
+
+To uninstall:
+
+```bash
+sudo launchctl unload /Library/LaunchDaemons/com.smack.plist
+sudo rm /Library/LaunchDaemons/com.smack.plist /usr/local/bin/smack
+```
+
 ### 2. Install the plugin
 
 #### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 {
-  dir = "~/code/smack.nvim",
+  "duncanlutz/smack.nvim",
   config = function()
     require("smack").setup()
   end,
@@ -63,7 +93,7 @@ sudo cp target/release/smack /usr/local/bin/
 
 ```lua
 use {
-  "~/code/smack.nvim",
+  "duncanlutz/smack.nvim",
   config = function()
     require("smack").setup()
   end,
@@ -73,43 +103,12 @@ use {
 #### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug '~/code/smack.nvim'
+Plug 'duncanlutz/smack.nvim'
 ```
 
 ```lua
 -- in after/plugin/smack.lua or init.lua
 require("smack").setup()
-```
-
-#### Manual
-
-Add to your `init.lua`:
-
-```lua
-vim.opt.rtp:prepend("~/code/smack.nvim")
-require("smack").setup()
-```
-
-### 3. Start the sensor daemon
-
-`smack` requires root for IOKit HID access. You can either run it manually:
-
-```bash
-sudo smack
-```
-
-Or install it as a Launch Daemon so it starts automatically on boot:
-
-```bash
-sudo cp com.smack.plist /Library/LaunchDaemons/
-sudo launchctl load /Library/LaunchDaemons/com.smack.plist
-```
-
-To uninstall the daemon:
-
-```bash
-sudo launchctl unload /Library/LaunchDaemons/com.smack.plist
-sudo rm /Library/LaunchDaemons/com.smack.plist
 ```
 
 ## Usage
