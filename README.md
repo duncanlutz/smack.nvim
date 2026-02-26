@@ -30,11 +30,11 @@ maximum feedback.
 #### Download prebuilt binary (recommended)
 
 Grab the latest release from
-[GitHub Releases](https://github.com/duncandoit/smack.nvim/releases):
+[GitHub Releases](https://github.com/duncanlutz/smack.nvim/releases):
 
 ```bash
 # Download and extract
-curl -L https://github.com/duncandoit/smack.nvim/releases/latest/download/smack_v0.1.0_darwin_arm64.tar.gz | tar xz
+curl -L https://github.com/duncanlutz/smack.nvim/releases/latest/download/smack_v0.1.0_darwin_arm64.tar.gz | tar xz
 sudo mv smack /usr/local/bin/
 ```
 
